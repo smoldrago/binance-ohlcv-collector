@@ -1,0 +1,102 @@
+[project]
+name = "binance-ohlcv-collector"
+version = "0.1.0"
+description = "Download and collect historical OHLCV candlestick data from Binance Vision for spot and futures markets"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "smoldrago" }]
+keywords = [
+    "binance",
+    "ohlcv",
+    "cryptocurrency",
+    "candlestick",
+    "klines",
+    "historical-data",
+    "trading",
+    "backtesting",
+    "crypto",
+    "futures",
+    "spot",
+    "data-collection",
+    "download",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "httpx>=0.27.0",
+    "pandas>=2.0.0",
+    "pyarrow>=15.0.0",
+    "typer>=0.12.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.4.0",
+    "respx>=0.21.0",
+    "pandas-stubs>=2.0.0",
+]
+
+[project.scripts]
+binance-ohlcv-collector = "binance_ohlcv_collector.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/smoldrago/binance-ohlcv-collector"
+Repository = "https://github.com/smoldrago/binance-ohlcv-collector"
+"Bug Tracker" = "https://github.com/smoldrago/binance-ohlcv-collector/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/binance_ohlcv_collector"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+explicit_package_bases = true
+mypy_path = "src"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "TCH"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["TCH003"]  # Allow runtime imports in tests
+"src/binance_ohlcv_collector/downloader.py" = ["TCH003"]  # Path used in dataclasses
+"src/binance_ohlcv_collector/processor.py" = ["TCH003"]  # Path used at runtime
+"src/binance_ohlcv_collector/__init__.py" = ["TCH002"]  # pandas used at runtime
+
+[tool.ruff.lint.isort]
+known-first-party = ["binance_ohlcv_collector"]
